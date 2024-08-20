@@ -9,8 +9,10 @@ export default class GitHobs extends Plugin {
 
 	private readonly toggleGitHubIssueControlsView = async (): Promise<void> => {
 		const existing = this.app.workspace.getLeavesOfType(GithubIssueControlsViewType);
+
 		if (existing.length) {
 			this.app.workspace.revealLeaf(existing[0]);
+
 			return;
 		}
 

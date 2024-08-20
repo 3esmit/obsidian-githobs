@@ -52,6 +52,7 @@ export async function pushIssue(
 		if (res.status === 200) {
 			await updateFile(file, res);
 		}
+
 		return;
 	}
 
@@ -67,7 +68,6 @@ export async function pushIssue(
 
 export async function fetchIssue(issueId: string, settings: GitHobsSettings, file: TFile) {
 	const res = await Api.getIssue(settings, issueId);
-
 	const fileRead = this.app.vault.getFiles().find((f: TFile) => f.path === file.path);
 	const lastDate = fileRead.stat.mtime;
 
@@ -86,6 +86,7 @@ export async function fetchIssue(issueId: string, settings: GitHobsSettings, fil
 
 export async function pullIssue(issueId: string, file: MarkdownFile, settings: GitHobsSettings) {
 	const res = await Api.getIssue(settings, issueId);
+
 	await updateFile(file, res, res.json.body, res.json.title);
 }
 

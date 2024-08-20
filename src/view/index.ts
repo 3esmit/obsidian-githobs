@@ -62,10 +62,12 @@ export class GithubIssueControlsView extends ItemView {
 
 		if (!fileOpened) {
 			obContainer.empty();
+
 			return;
 		}
 
 		const rootElement = document.createElement('div');
+
 		this.setIssueId(PropertiesHelper.readIssueId(fileOpened.data));
 
 		const viewContainer = createContainer(rootElement);
@@ -93,6 +95,7 @@ export class GithubIssueControlsView extends ItemView {
 			});
 
 			obContainer.appendChild(viewContainer);
+
 			return;
 		}
 
@@ -113,8 +116,10 @@ export class GithubIssueControlsView extends ItemView {
 				action: async () => {
 					if (!this.issueId) {
 						new Notice('Select a issue id');
+
 						return;
 					}
+
 					return await changeIssueId(this.issueId, fileOpened, this.settings);
 				}
 			},
@@ -140,6 +145,7 @@ export class GithubIssueControlsView extends ItemView {
 						this.settings,
 						fileOpened.file
 					);
+
 					this.setFetchDate(fetchedIssue.date);
 					this.status = fetchedIssue.status;
 					this.reload(editor);
@@ -186,6 +192,7 @@ export class GithubIssueControlsView extends ItemView {
 
 function createContainer(rootEl: HTMLDivElement) {
 	const c = rootEl.createDiv({ cls: 'vertical-tab-content-container' });
+
 	return c;
 }
 
@@ -217,6 +224,7 @@ function createInfoSection(
 	}
 
 	const infoElement = i.createDiv({ cls: 'setting-item-info' });
+
 	infoElement.createDiv({ cls: 'setting-item-name', text: info });
 
 	if (description) {
@@ -237,6 +245,7 @@ function createInfoSection(
 
 		if (input) {
 			const inputEl = settingControl.createEl('input', { cls: 'githobs-input' });
+
 			inputEl.setAttribute('type', input.type);
 			inputEl.setAttribute('value', input.value);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -247,15 +256,18 @@ function createInfoSection(
 
 		if (dropdown) {
 			const select = settingControl.createEl('select');
+
 			select.className = 'dropdown';
 			dropdown.items.forEach((i) => {
 				const o = select.createEl('option', { text: i.text });
+
 				o.setAttribute('value', i.value);
 			});
 		}
 
 		if (button) {
 			const btn = settingControl.createEl('button');
+
 			setIcon(btn, button.icon);
 
 			btn.onclick = async () => {

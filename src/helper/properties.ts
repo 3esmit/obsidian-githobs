@@ -19,6 +19,7 @@ export function readProperties(data: string): {
 	indexEndPropertiesLine: number | undefined;
 } {
 	const [firstLine, ...restOfLines] = data.split('\n');
+
 	// Check if exist the property start syntax
 	if (firstLine !== PROPERTIES_DELIMITER) {
 		return { properties: undefined, indexEndPropertiesLine: undefined };
@@ -26,6 +27,7 @@ export function readProperties(data: string): {
 
 	// Check if exist the property end syntax
 	const indexEndPropertiesLine = restOfLines.indexOf(PROPERTIES_DELIMITER);
+
 	if (!indexEndPropertiesLine) {
 		return { properties: undefined, indexEndPropertiesLine: undefined };
 	}
@@ -38,20 +40,31 @@ export function readProperties(data: string): {
 
 export function removeProperties(data: string) {
 	const { indexEndPropertiesLine } = readProperties(data);
-	if (!indexEndPropertiesLine) return data;
+
+	if (!indexEndPropertiesLine) {
+		return data;
+	}
 
 	const dataSplitted = data.split('\n');
+
 	return dataSplitted.slice(indexEndPropertiesLine + 1).join('\n');
 }
 
 export function readIssueId(data: string) {
 	const { properties } = readProperties(data);
-	if (!properties) return;
+
+	if (!properties) {
+		return;
+	}
 
 	const githubIssueProperty = properties.find((p) => p.startsWith(GITHUB_ISSUE_PROPERTY_CODE));
-	if (!githubIssueProperty) return;
+
+	if (!githubIssueProperty) {
+		return;
+	}
 
 	const [, issueId] = githubIssueProperty.split(':');
+
 	return issueId;
 }
 
