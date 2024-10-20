@@ -72,14 +72,14 @@ export class GithubIssueControlsView extends ItemView {
 
 		const viewContainer = createContainer(rootElement);
 
-		if (!this.settings.repo || !this.settings.owner || !this.settings.token) {
+		if (!this.settings.token || this.settings.repos.length === 0) {
 			obContainer.empty();
 
 			createInfoSection(
 				viewContainer,
 				{
 					info: 'Missing settings! 🚨',
-					description: `Please setup settings first`
+					description: { text: 'Please setup settings first' }
 				},
 				true
 			);
@@ -102,9 +102,8 @@ export class GithubIssueControlsView extends ItemView {
 		createInfoSection(
 			viewContainer,
 			{
-				info: 'Issue Editor 🦤',
-				description: 'Repo: ',
-				descriptionBold: this.settings.repo
+				info: 'Issue Editor 🦤'
+				// description: { text: 'Repo: ', textBold: this.settings.repo }
 			},
 			true
 		);
@@ -132,7 +131,7 @@ export class GithubIssueControlsView extends ItemView {
 
 		createInfoSection(viewContainer, {
 			info: 'Fetch',
-			description: this.issueId ? this.fetchDate : 'First push',
+			description: { text: this.issueId ? this.fetchDate : 'First push' },
 			button: {
 				icon: 'refresh-ccw',
 				action: async () => {
@@ -156,7 +155,9 @@ export class GithubIssueControlsView extends ItemView {
 		createInfoSection(viewContainer, {
 			info: 'Push',
 			description:
-				this.status === GitHubIssueStatus.CanPush ? '🟢 Changes can be pushed' : '',
+				this.status === GitHubIssueStatus.CanPush
+					? { text: '🟢 Changes can be pushed' }
+					: undefined,
 			button: {
 				icon: 'upload',
 				action: async () => {
@@ -172,7 +173,7 @@ export class GithubIssueControlsView extends ItemView {
 				info: 'Pull',
 				description:
 					this.status === GitHubIssueStatus.CanPull
-						? '🔴 New version available'
+						? { text: '🔴 New version available' }
 						: undefined,
 				button: {
 					icon: 'download',
@@ -201,14 +202,12 @@ function createInfoSection(
 	{
 		info,
 		description,
-		descriptionBold,
 		button,
 		dropdown,
 		input
 	}: {
 		info: string;
-		description?: string;
-		descriptionBold?: string;
+		description?: { text?: string; textBold?: string; linkText?: string; linkUrl?: string };
 		button?: { icon: string; action: () => Promise<void> };
 		dropdown?: { items: { text: string; value: string }[] };
 		input?: { type: string; value: string; onChange: (val: string) => Promise<void> };
@@ -227,14 +226,14 @@ function createInfoSection(
 
 	infoElement.createDiv({ cls: 'setting-item-name', text: info });
 
-	if (description) {
+	if (description?.text) {
 		const descEl = infoElement.createDiv({
 			cls: 'setting-item-description',
-			text: description
+			text: description.text
 		});
 
-		if (descriptionBold) {
-			descEl.createEl('strong', { text: descriptionBold });
+		if (description.textBold) {
+			descEl.createEl('strong', { text: description.textBold });
 		}
 	}
 
