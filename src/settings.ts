@@ -63,16 +63,20 @@ export class SettingTab extends PluginSettingTab {
 		}) => {
 			const fragment = document.createDocumentFragment();
 			const div = fragment.createDiv({ text: text });
+
 			div.createEl('a', { href: href, text: aText });
 			fragment.append(div);
+
 			return fragment;
 		};
 
 		createSetting(this.plugin, containerEl, {
 			name: 'Github Token',
-			description: createDescriptionWithLink(
-				{href: "https://github.com/settings/tokens/new", text: "Add the github token, alternately ", aText: 'create one'}
-			),
+			description: createDescriptionWithLink({
+				href: 'https://github.com/settings/tokens/new',
+				text: 'Add the github token, alternately ',
+				aText: 'create one'
+			}),
 			placeholder: 'Enter your secret',
 			value: 'token'
 		});
